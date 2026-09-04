@@ -1,23 +1,25 @@
-const express = require ('express');
+const express = require("express");
+
 const app = express();
 
-const packages = require("./tour");
+// const tourRoutes = require("./routes/tourRoutes");
 
-app.get(`/`,(req,res)=>{
-    res.send("hello world");
-});
+app.use(express.json());
 
-app.get("/packages",(req,res)=>{
-    res.json(packages);
-});
+// app.use("/api", tourRoutes);
 
-app.get("/packages/:id",(req,res)=>{
-    const packageId = parseInt(req.params.id);
-    const selectedPackage = packages.find(item => item.id ===
-    packageId);
-    res.json(selectedPackage);
-    });
+// const middleware = (req, res, next) => {
+//   console.log("Middleware executed");
+//   next();
+// }
 
-app.listen(3000,()=>{
-    console.log("server is running on 3000");
+const logger = (req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+}
+
+app.use(logger);
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
 });
